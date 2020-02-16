@@ -23,7 +23,7 @@ ROOM_CHOICES = [
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to='photos/')
+    image = models.ImageField(upload_to='photos/', blank=True)
 
     class Meta:
         verbose_name = 'Фотография'
@@ -38,6 +38,13 @@ class Address(models.Model):
     country = models.CharField('Страна', max_length=20)
     country_code = models.CharField('Код страны', max_length=5)
 
+    def __str__(self):
+        return f'{self.city} , {self.street}, {self.house_number}'
+
+    class Meta:
+        verbose_name = 'Адрес'
+        verbose_name_plural = 'Адресы'
+
 
 class Apartment(models.Model):
     type = models.ForeignKey(Type, on_delete=models.CASCADE, verbose_name='Тип недвижимости')
@@ -45,7 +52,7 @@ class Apartment(models.Model):
     price = models.IntegerField('Цена')
     latitude = models.FloatField('Широта')
     longitude = models.FloatField('Долгота')
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, verbose_name='Адрес', default=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, verbose_name='Адрес')
     square = models.FloatField('Площадь')
     image = models.ManyToManyField(Image, verbose_name='Фотографии', default=True)
     date_of_arrival = models.DateField('Дата прибытия', help_text='гггг-мм-дд')
